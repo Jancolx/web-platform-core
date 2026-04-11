@@ -32,7 +32,7 @@ jobs:
         run: |
           if [ "${{ github.event.inputs.target_resource }}" == "network (ALB & Security Groups)" ]; then
             terraform apply -target=aws_lb.web_alb -target=aws_security_group.alb_sg -auto-approve
-          if [ "${{ github.event.inputs.target_resource }}" == "DESTROY ALL" ]; then
+          elif [ "${{ github.event.inputs.target_resource }}" == "DESTROY ALL" ]; then
             terraform destroy -auto-approve
           elif [ "${{ github.event.inputs.target_resource }}" == "compute (ASG & ECR)" ]; then
             terraform apply -target=aws_autoscaling_group.web_asg -target=aws_ecr_repository.web_app -auto-approve

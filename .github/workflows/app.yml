@@ -1,11 +1,6 @@
 name: "2. Build & Deploy App"
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "src/**"
-      - "dock"
   workflow_dispatch: # Allows manual run from GitHub Actions tab
 
 jobs:
