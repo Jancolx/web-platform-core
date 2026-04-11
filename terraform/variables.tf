@@ -5,8 +5,3 @@ variable "aws_region" {
 variable "project_name" {
   default = "web"
 }
-
-variable "cf_dist_id" {
-  description = "Existing CloudFront ID"
-  default     = "EMO2YYIZBBT1L"
-}
