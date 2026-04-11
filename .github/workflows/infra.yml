@@ -45,5 +45,5 @@ jobs:
           elif [ "${{ github.event.inputs.target_resource }}" == "compute (ASG & ECR)" ]; then
             terraform apply -target=aws_autoscaling_group.web_asg -target=aws_ecr_repository.web_app -auto-approve
           else
-            terraform apply -auto-approve
+            terraform destroy -auto-approve
           fi
