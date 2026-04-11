@@ -10,8 +10,7 @@ resource "aws_iam_role" "ec2_role" {
     }]
   })
 }
-
-# IAM Policy - ECR Access
+# IAM Policy - ECR Only
 resource "aws_iam_role_policy" "ec2_policy" {
   name = "${var.project_name}-ec2-policy"
   role = aws_iam_role.ec2_role.id
@@ -30,7 +29,6 @@ resource "aws_iam_role_policy" "ec2_policy" {
     ]
   })
 }
-
 # IAM Instance Profile (required wrapper for EC2)
 resource "aws_iam_instance_profile" "ec2_profile" {
   name = "${var.project_name}-ec2-profile"
@@ -57,7 +55,7 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
-# Launch Template
+# Launch Template - Clean Startup
 resource "aws_launch_template" "web_lt" {
   name_prefix   = "${var.project_name}-lt-"
   image_id      = "ami-0c101f26f147fa7fd"
@@ -73,15 +71,15 @@ resource "aws_launch_template" "web_lt" {
   }
 
   user_data = base64encode(<<-EOF
-    #!/bin/bash
-    yum update -y
-    yum install -y docker
-    systemctl start docker
-    systemctl enable docker
-    aws ecr get-login-password --region ${var.aws_region} | docker login --username AWS --password-stdin ${aws_ecr_repository.web_repo.repository_url}
-    docker pull ${aws_ecr_repository.web_repo.repository_url}:latest
-    docker run -d -p 80:80 ${aws_ecr_repository.web_repo.repository_url}:latest
-    EOF
+              #!/bin/bash
+              yum update -y
+              yum install -y docker
+              systemctl start docker
+              systemctl enable docker
+              aws ecr get-login-password --region ${var.aws_region} | docker login --username AWS --password-stdin ${aws_ecr_repository.web_repo.repository_url}
+              docker pull ${aws_ecr_repository.web_repo.repository_url}:latest
+              docker run -d -p 80:80 ${aws_ecr_repository.web_repo.repository_url}:latest
+              EOF
   )
 }
 
