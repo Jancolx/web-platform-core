@@ -27,7 +27,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.registry }}
           ECR_REPOSITORY: web-repo
-          IMAGE_TAG: ${{ github.sha }}
+        # IMAGE_TAG: ${{ github.sha }}
         run: |
           # Build the Docker image using the Dockerfile in the root
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
