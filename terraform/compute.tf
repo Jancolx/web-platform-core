@@ -76,9 +76,9 @@ resource "aws_launch_template" "web_lt" {
               yum install -y docker
               systemctl start docker
               systemctl enable docker
-              aws ecr get-login-password --region ${var.aws_region} | docker login --username AWS --password-stdin ${aws_ecr_repository.web_repo.repository_url}
-              docker pull ${aws_ecr_repository.web_repo.repository_url}:latest
-              docker run -d -p 80:80 ${aws_ecr_repository.web_repo.repository_url}:latest
+              aws ecr get-login-password --region ${var.aws_region} | docker login --username AWS --password-stdin ${aws_ecr_repository.web_app.repository_url}
+              docker pull ${aws_ecr_repository.web_app.repository_url}:latest
+              docker run -d -p 80:80 ${aws_ecr_repository.web_app.repository_url}:latest
               EOF
   )
 }
