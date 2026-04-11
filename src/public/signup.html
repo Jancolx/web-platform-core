@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up — ExamEdge</title>
+  <meta name="description" content="Create your free ExamEdge account and start practicing." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="auth-page">
+
+    <!-- Brand Panel -->
+    <div class="auth-brand">
+      <a href="index.html" class="auth-brand-logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="url(#lg2)"/>
+          <path d="M8 10h10M8 16h7M8 22h10" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="22" cy="22" r="5" fill="#fff" fill-opacity="0.2" stroke="#fff" stroke-width="1.5"/>
+          <path d="M20 22l1.5 1.5L24 20" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs><linearGradient id="lg2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs>
+        </svg>
+        ExamEdge
+      </a>
+      <h2 class="auth-brand-title">Start Your <span class="gradient-text">Free</span> Journey Today</h2>
+      <p class="auth-brand-sub">No credit card. No complications. Just sign up and start practicing in under 60 seconds.</p>
+      <div style="display:flex;flex-direction:column;gap:14px;position:relative;z-index:1;">
+        <div style="display:flex;align-items:center;gap:12px;color:var(--text-secondary);font-size:0.9rem">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;color:var(--success);flex-shrink:0">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          500+ exam topics across all major subjects
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;color:var(--text-secondary);font-size:0.9rem">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;color:var(--success);flex-shrink:0">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          Instant AI-powered feedback on every answer
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;color:var(--text-secondary);font-size:0.9rem">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;color:var(--success);flex-shrink:0">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          Personalised study plan built around your goals
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Panel -->
+    <div class="auth-form-panel">
+      <div class="auth-form-inner">
+        <h1>Create Account</h1>
+        <p class="auth-subtitle">Already have an account? <a href="login.html" style="color:var(--accent);font-weight:600">Log in</a></p>
+
+        <!-- Social Buttons -->
+        <div class="auth-social">
+          <button class="btn-social" id="googleSignupBtn">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" />
+            Google
+          </button>
+          <button class="btn-social" id="githubSignupBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+            GitHub
+          </button>
+        </div>
+
+        <div class="divider">or sign up with email</div>
+
+        <!-- Registration Form -->
+        <form id="signupForm" class="auth-stack mt-4" novalidate>
+          <div id="signupAlert" class="alert alert-danger hidden">
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            <span id="signupAlertMsg">Something went wrong.</span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div class="form-group">
+              <label class="form-label" for="signupFirstName">First Name</label>
+              <input type="text" id="signupFirstName" class="form-control" placeholder="Ravi" autocomplete="given-name" required />
+              <span class="form-error" id="signupFirstNameErr">Required.</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="signupLastName">Last Name</label>
+              <input type="text" id="signupLastName" class="form-control" placeholder="Kumar" autocomplete="family-name" required />
+              <span class="form-error" id="signupLastNameErr">Required.</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="signupEmail">Email address</label>
+            <div class="input-group">
+              <svg class="input-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              <input type="email" id="signupEmail" class="form-control" placeholder="you@example.com" autocomplete="email" required />
+            </div>
+            <span class="form-error" id="signupEmailErr">Please enter a valid email.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="signupPassword">Password</label>
+            <div class="input-group">
+              <svg class="input-icon" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              <input type="password" id="signupPassword" class="form-control" placeholder="Min. 8 characters" autocomplete="new-password" required />
+              <button type="button" class="input-action" id="toggleSignupPass" title="Show/hide password">
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              </button>
+            </div>
+            <div class="password-strength mt-2">
+              <div class="password-strength-fill" id="pwStrengthBar"></div>
+            </div>
+            <span class="strength-label text-muted" id="pwStrengthLabel"></span>
+            <span class="form-error" id="signupPasswordErr">Min 8 chars with a number and symbol.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="signupRole">I am a</label>
+            <select id="signupRole" class="form-control" required>
+              <option value="">Select your role…</option>
+              <option value="student">Student</option>
+              <option value="teacher">Teacher / Instructor</option>
+              <option value="admin">Institution Admin</option>
+            </select>
+            <span class="form-error" id="signupRoleErr">Please select a role.</span>
+          </div>
+
+          <label class="checkbox-label" style="align-items:flex-start">
+            <input type="checkbox" id="signupTerms" style="margin-top:2px" />
+            <span>I agree to the <a href="#" style="color:var(--accent)">Terms of Service</a> and <a href="#" style="color:var(--accent)">Privacy Policy</a></span>
+          </label>
+          <span class="form-error" id="signupTermsErr">You must accept the terms.</span>
+
+          <button type="submit" class="btn btn-primary btn-full" id="signupSubmitBtn">
+            <span id="signupBtnText">Create Account</span>
+            <span class="spinner hidden" id="signupSpinner"></span>
+          </button>
+        </form>
+
+        <p class="auth-switch">Already a member? <a href="login.html">Log in</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

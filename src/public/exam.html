@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Take Exam — ExamEdge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <!-- Exam In-Progress View -->
+  <div id="examInProgress">
+    <div class="exam-page">
+      <!-- Exam Header -->
+      <div class="exam-header">
+        <div>
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:4px">EXAM IN PROGRESS</div>
+          <div style="font-size:1.1rem;font-weight:700" id="examTitle">Chapter 5 — Algorithms &amp; Complexity</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <div style="text-align:right">
+            <div style="font-size:0.8rem;color:var(--text-muted)">Question</div>
+            <div style="font-weight:700" id="questionCounter">1 / 10</div>
+          </div>
+          <div class="exam-timer" id="examTimer">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span id="timerDisplay">20:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-bar mb-4">
+        <div class="progress-fill" id="examProgress" style="width:10%"></div>
+      </div>
+
+      <!-- Question -->
+      <div class="question-card" id="questionCard">
+        <div class="question-num" id="questionNum">Question 1</div>
+        <div class="question-text" id="questionText">Loading question…</div>
+        <div class="options-list" id="optionsList"></div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="exam-nav">
+        <button class="btn btn-outline" id="prevBtn" disabled>
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          Previous
+        </button>
+        <div class="question-dots" id="questionDots"></div>
+        <button class="btn btn-primary" id="nextBtn">
+          Next
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <div style="text-align:center;margin-top:20px">
+        <button class="btn btn-danger btn-sm" id="submitExamBtn">Submit Exam Early</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result View (hidden initially) -->
+  <div id="examResult" class="hidden">
+    <div class="result-page">
+      <div class="badge badge-success mb-4" style="margin:0 auto">Exam Complete</div>
+      <h1 style="margin-bottom:8px">Here Are Your Results</h1>
+      <p class="text-muted mb-6">Great effort! Review your answers below and revisit any mistakes.</p>
+
+      <div class="result-ring">
+        <svg viewBox="0 0 180 180">
+          <defs>
+            <linearGradient id="resultGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#22d3ee"/>
+            </linearGradient>
+          </defs>
+          <circle class="result-ring-track" cx="90" cy="90" r="78"/>
+          <circle class="result-ring-fill" cx="90" cy="90" r="78" id="resultRingFill"
+            stroke-dasharray="490" stroke-dashoffset="490"/>
+        </svg>
+        <div class="result-ring-inner">
+          <div class="result-score gradient-text" id="resultScorePct">--%</div>
+          <div class="result-score-lbl">Score</div>
+        </div>
+      </div>
+
+      <div class="result-stats">
+        <div class="result-stat">
+          <div class="result-stat-val" style="color:var(--success)" id="resultCorrect">--</div>
+          <div class="result-stat-lbl">Correct</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-val" style="color:var(--danger)" id="resultWrong">--</div>
+          <div class="result-stat-lbl">Wrong</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-val" style="color:var(--warning)" id="resultSkipped">--</div>
+          <div class="result-stat-lbl">Skipped</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <a href="dashboard.html" class="btn btn-outline">Back to Dashboard</a>
+        <button class="btn btn-primary" id="retakeBtn">Retake Exam</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit Confirm Modal -->
+  <div id="submitModal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:500;backdrop-filter:blur(4px)">
+    <div class="card glass" style="max-width:400px;width:90%;padding:32px;text-align:center">
+      <div style="width:56px;height:56px;margin:0 auto 18px;border-radius:50%;background:rgba(245,158,11,0.1);display:flex;align-items:center;justify-content:center;color:var(--warning)">
+        <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+      </div>
+      <h3 style="margin-bottom:10px">Submit Exam?</h3>
+      <p class="text-muted" style="font-size:0.9rem;margin-bottom:24px" id="modalUnansweredMsg">You have unanswered questions. Are you sure you want to submit?</p>
+      <div style="display:flex;gap:12px;justify-content:center">
+        <button class="btn btn-outline" id="modalCancelBtn">Continue Exam</button>
+        <button class="btn btn-primary" id="modalConfirmBtn">Yes, Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+  <script src="js/main.js"></script>
+  <script src="js/exam.js"></script>
+</body>
+</html>
