@@ -25,5 +25,5 @@ data "aws_subnets" "all" {
 
 # ECR Repository
 resource "aws_ecr_repository" "web_app" {
-  name = "${var.project_name}-repo"
+  name = "web-repo"
 }
