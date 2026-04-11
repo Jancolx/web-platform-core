@@ -1,4 +1,4 @@
-name: "AWS Infrastructure (Terraform)"
+name: "1.AWS Infrastructure (Terraform)"
 on:
   workflow_dispatch:
     inputs:
