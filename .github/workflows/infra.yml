@@ -31,17 +31,14 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init \
-            -backend-config="bucket=${{ secrets.BUCKET_NAME }}" \
-            -backend-config="key=terraform.tfstate" \
-            -backend-config="region=us-east-1" \
-            -backend-config="encrypt=true"
+            -backend-config="bucket=${{ secrets.BUCKET_NAME }}"
       #Remove the dynamodb_table line entirely dynamodb_table = "terraform-lock"
       - name: Terraform Apply
         run: |
           if [ "${{ github.event.inputs.target_resource }}" == "network (ALB & Security Groups)" ]; then
             terraform apply -target=aws_lb.web_alb -target=aws_security_group.alb_sg -auto-approve
           elif [ "${{ github.event.inputs.target_resource }}" == "DESTROY ALL" ]; then
-            terraform destroy 
+            terraform destroy -auto-approve
             aws s3 rm ${{ secrets.BUCKET_NAME }}
           elif [ "${{ github.event.inputs.target_resource }}" == "compute (ASG & ECR)" ]; then
             terraform apply -target=aws_autoscaling_group.web_asg -target=aws_ecr_repository.web_app -auto-approve
