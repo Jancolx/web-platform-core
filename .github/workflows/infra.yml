@@ -9,7 +9,7 @@ on:
         options:
           - all
           - network (ALB & Security Groups)
-          - compute (ASG & ECR)
+          - ECR & EC2_temp
           - DESTROY ALL
 
 jobs:
