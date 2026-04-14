@@ -57,8 +57,8 @@ resource "aws_security_group" "ec2_sg" {
 
 # Launch Template - Clean Startup
 resource "aws_launch_template" "web_lt" {
-  name_prefix   = "${var.project_name}-lt-"
-  image_id      = "ami-0c101f26f147fa7fd"
+  name_prefix   = "${var.project_name}-lt"
+  image_id      = data.aws_ami.latest_linux.id
   instance_type = "t3.micro"
 
   iam_instance_profile {
