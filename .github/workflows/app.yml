@@ -32,7 +32,7 @@ jobs:
           docker push $REGISTRY/$REPOSITORY:${{ github.sha }}
       - name: update image tag in state file
         run: |
-          terraform init 
-          -backend-config="bucket=${{ secrets.BUCKET_NAME }}"
+          terraform init \
+          -backend-config="bucket=${{ secrets.BUCKET_NAME }}" \
           -backend-config="region=ap-south-1"
           terraform apply -var="image_tag=${{ github.sha }}" -auto-approve
