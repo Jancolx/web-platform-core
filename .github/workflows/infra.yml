@@ -40,8 +40,8 @@ jobs:
           elif [ "${{ github.event.inputs.target_resource }}" == "DESTROY ALL" ]; then
             terraform destroy -auto-approve
             aws s3 rm "s3://${{ secrets.BUCKET_NAME }}/terraform.tfstate"
-          elif [ "${{ github.event.inputs.target_resource }}" == "compute (ASG & ECR)" ]; then
-            terraform apply -target=aws_autoscaling_group.web_asg -target=aws_ecr_repository.web_app -auto-approve
+          elif [ "${{ github.event.inputs.target_resource }}" == "ECR & EC2_temp" ]; then
+            terraform apply -target=aws_launch_template.web_lt -target=aws_ecr_repository.web_app -auto-approve
           else
             terraform apply -auto-approve
           fi
