@@ -27,8 +27,8 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          docker build -t $REGISTRY/$REPOSITORY: ${{ github.sha }}
-          docker push $REGISTRY/$REPOSITORY: ${{ github.sha }}
+          docker build -t $REGISTRY/$REPOSITORY:${{ github.sha }}
+          docker push $REGISTRY/$REPOSITORY:${{ github.sha }}
       - name: update image tag in state file
         run: |
           terraform init -backend-config="bucket=${{ secrets.BUCKET_NAME }}"
