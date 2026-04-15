@@ -33,7 +33,7 @@ jobs:
           -backend-config="bucket=${{ secrets.BUCKET_NAME }}" \
           -backend-config="region=us-east-1"
           terraform apply \
-          -target=aws_launch_template.web_lt -target=aws_ecr_repository.web_app \
+          -target=aws_ecr_repository.web_app \
           -var="image_tag=${{ github.sha }}" -auto-approve
 
       - name: Build, tag, and push docker image to Amazon ECR
