@@ -58,16 +58,6 @@ GitHub Actions
 
 The infra workflow also supports targeted deploys (`network`, `ECR & EC2`) and `DESTROY ALL`.
 
-### Local Dev
-
-```bash
-cd src && npm install && npm run dev     # http://localhost:3000
-```
-
-```bash
-docker build -t examedge . && docker run -p 80:80 examedge
-```
-
 ---
 
 ## Security Notes
