@@ -1,333 +1,79 @@
-<p align="center">
-  <img src="https://img.shields.io/badge/Terraform-7B42BC?style=for-the-badge&logo=terraform&logoColor=white" alt="Terraform" />
-  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
-  <img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonwebservices&logoColor=white" alt="AWS" />
-  <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" alt="GitHub Actions" />
-  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
-</p>
+# ExamEdge — Dockerized Deployment on AWS
 
-<h1 align="center">ExamEdge — Cloud-Native Web Platform</h1>
+![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=flat-square&logo=terraform&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=amazonwebservices&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
 
-<p align="center">
-  <b>A fully automated, production-grade deployment pipeline for a containerized web application on AWS.</b><br/>
-  <sub>Infrastructure as Code · Docker · CI/CD · Auto Scaling · Load Balancing</sub>
-</p>
+A Node.js exam portal containerized with Docker and deployed to AWS using Terraform + GitHub Actions.  
+The app was vibe-coded — this repo is about the **DevOps pipeline**, not the application code.
 
 ---
 
-## 📋 Table of Contents
-
-- [Overview](#-overview)
-- [Architecture](#-architecture)
-- [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [Infrastructure Details](#-infrastructure-details)
-- [CI/CD Pipelines](#-cicd-pipelines)
-- [Prerequisites](#-prerequisites)
-- [Getting Started](#-getting-started)
-- [Configuration](#-configuration)
-- [Usage](#-usage)
-- [Security](#-security)
-- [License](#-license)
-
----
-
-## 🔭 Overview
-
-**ExamEdge** is an online examination platform built with Node.js/Express, containerized with Docker, and deployed to AWS using a fully automated infrastructure pipeline. The web application itself was AI-generated (via Vibe Coding) — the core focus of this project is the **DevOps pipeline**: infrastructure provisioning with Terraform, containerization with Docker, and end-to-end CI/CD via GitHub Actions.
-
-### Key Highlights
-
-| Area                       | Details                                                                               |
-| -------------------------- | ------------------------------------------------------------------------------------- |
-| **Infrastructure as Code** | Terraform provisions all AWS resources — ECR, EC2, ALB, ASG, IAM, and security groups |
-| **Containerization**       | Multi-layer Docker build optimized for Node.js production workloads                   |
-| **CI/CD**                  | Two-stage GitHub Actions pipeline — separate infra and app deployment workflows       |
-| **High Availability**      | Application Load Balancer + Auto Scaling Group across multiple AZs                    |
-| **State Management**       | Remote Terraform state stored in S3 with encryption at rest                           |
-
----
-
-## 🏗 Architecture
+## Architecture
 
 ```
-┌────────────────────────────────────────────────────────────────────┐
-│                         GitHub Repository                          │
-│  ┌──────────────────┐          ┌──────────────────┐                │
-│  │  infra.yml       │          │  app.yml         │                │
-│  │  (Terraform)     │          │  (build&push)    │                │
-│  └────────┬─────────┘          └────────┬─────────┘                │
-└───────────┼─────────────────────────────┼──────────────────────────┘
-            │                             │
-            ▼                             ▼
-┌───────────────────────────────────────────────────────────────┐
-│                        AWS Cloud (ap-south-1)                 │
-│                                                               │
-│   ┌─────────────────────────────────────────────────────┐     │
-│   │                  Default VPC                        │     │
-│   │                                                     │     │
-│   │   ┌───────────────────┐    ┌──────────────────┐     │     │
-│   │   │  ALB Security     │    │   EC2 Security   │     │     │
-│   │   │  Group (Port 80)  │    │   Group (ALB →)  │     │     │
-│   │   └────────┬──────────┘    └──────┬───────────┘     │     │
-│   │            │                      │                 │     │
-│   │   ┌────────▼──────────┐           │                 │     │
-│   │   │  Application      │           │                 │     │
-│   │   │  Load Balancer    │───────────┤                 │     │
-│   │   └───────────────────┘           │                 │     │
-│   │                          ┌────────▼───────────┐     │     │
-│   │                          │  Auto Scaling      │     │     │
-│   │                          │  Group (1–2)       │     │     │
-│   │                          │  ┌──────────────┐  │     │     │
-│   │                          │  │ EC2(t3.micro)│  │     │     │
-│   │                          │  │ Docker       │  │     │     │
-│   │                          │  │ Container    │  │     │     │
-│   │                          │  └──────────────┘  │     │     │
-│   │                          └────────────────────┘     │     │
-│   └─────────────────────────────────────────────────────┘     │
-│                                                               │
-│   ┌──────────────┐         ┌──────────────────┐               │
-│   │  ECR         │         │  S3 Bucket       │               │
-│   │  (web-repo)  │         │  (tfstate)       │               │
-│   └──────────────┘         └──────────────────┘               │
-└───────────────────────────────────────────────────────────────┘
+GitHub Actions
+  ├── infra.yml   → Terraform → AWS (ALB, EC2, ASG, ECR, IAM)
+  └── app.yml     → Docker Build → Push to ECR
 ```
+
+**AWS setup:** ALB → Auto Scaling Group (1–2 × t3.micro) → Docker container on EC2  
+**State:** Terraform remote backend on S3 (encrypted)
 
 ---
 
-## 🛠 Tech Stack
-
-| Layer                | Technology                  | Purpose                               |
-| -------------------- | --------------------------- | ------------------------------------- |
-| **Application**      | Node.js 18, Express 4       | REST API + static file serving        |
-| **Containerization** | Docker (Alpine)             | Lightweight, reproducible builds      |
-| **Infrastructure**   | Terraform (~> 5.0)          | Declarative AWS resource provisioning |
-| **Cloud Provider**   | AWS (ap-south-1)            | ECR, EC2, ALB, ASG, IAM, VPC          |
-| **CI/CD**            | GitHub Actions              | Automated infra & app deployment      |
-| **State Backend**    | AWS S3                      | Encrypted remote Terraform state      |
-| **Security**         | Helmet, CORS, Rate Limiting | Application-layer hardening           |
-
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```
-.
-├── .github/
-│   └── workflows/
-│       ├── infra.yml           # 1️⃣  Terraform infrastructure pipeline
-│       └── app.yml             # 2️⃣  Docker build & deploy pipeline
+├── .github/workflows/
+│   ├── infra.yml          # Provision/destroy AWS infra
+│   └── app.yml            # Build & push Docker image
 ├── terraform/
-│   ├── main.tf                 # Provider, backend, VPC data, ECR
-│   ├── compute.tf              # IAM, SG, Launch Template, ASG
-│   ├── network.tf              # ALB, Target Group, Listener
-│   └── variables.tf            # Input variables & AMI lookup
-├── src/
-│   ├── server.js               # Express application entry point
-│   ├── package.json            # Node.js dependencies
-│   ├── routes/                 # API route handlers
-│   ├── middleware/              # Custom middleware
-│   ├── data/                   # Data layer
-│   └── public/                 # Frontend (HTML/CSS/JS)
-│       ├── index.html
-│       ├── login.html
-│       ├── signup.html
-│       ├── dashboard.html
-│       └── exam.html
-├── Dockerfile                  # Multi-layer production build
+│   ├── main.tf            # Provider, backend, ECR
+│   ├── compute.tf         # IAM, EC2 launch template, ASG
+│   ├── network.tf         # ALB, target group, listener
+│   └── variables.tf       # Region, project name, image tag
+├── src/                   # Node.js app (Express)
+├── Dockerfile
 └── README.md
 ```
 
 ---
 
-## ⚙ Infrastructure Details
+## Setup
 
-### Terraform Resources
+### GitHub Secrets Required
 
-The infrastructure is split into modular `.tf` files for clarity:
+| Secret                  | What                          |
+| ----------------------- | ----------------------------- |
+| `AWS_ACCESS_KEY_ID`     | IAM access key                |
+| `AWS_SECRET_ACCESS_KEY` | IAM secret key                |
+| `BUCKET_NAME`           | S3 bucket for Terraform state |
 
-#### `main.tf` — Foundation
+### Deploy
 
-- **S3 Backend** — Remote state with encryption (`us-east-1`)
-- **AWS Provider** — Configured for `ap-south-1`
-- **Default VPC & Subnets** — Data sources for existing networking
-- **ECR Repository** — `web-repo` for Docker images
+1. **Infrastructure** — Actions tab → _"1. AWS Infrastructure (Terraform)"_ → Run with `all`
+2. **App** — Actions tab → _"2. Build & Deploy App"_ → Run
 
-#### `compute.tf` — Compute Layer
+The infra workflow also supports targeted deploys (`network`, `ECR & EC2`) and `DESTROY ALL`.
 
-- **IAM Role & Policy** — Least-privilege ECR pull access for EC2
-- **Instance Profile** — IAM wrapper for EC2 attachment
-- **Security Group** — Ingress from ALB only (port 80), full egress
-- **Launch Template** — Amazon Linux 2, `t3.micro`, auto Docker setup via `user_data`
-- **Auto Scaling Group** — Min: 1 / Max: 2, multi-AZ deployment
-
-#### `network.tf` — Networking & Load Balancing
-
-- **ALB Security Group** — Public HTTP ingress (port 80)
-- **Application Load Balancer** — Multi-AZ distribution
-- **Target Group** — HTTP health checks on port 80
-- **Listener** — HTTP:80 → forward to Target Group
-
-#### `variables.tf` — Configuration
-
-- `aws_region` — Deployment region (default: `ap-south-1`)
-- `project_name` — Resource naming prefix (default: `web`)
-- `image_tag` — Docker image tag (default: `latest`, overridden by CI)
-- `aws_ami` — Dynamic latest Amazon Linux 2 AMI lookup
-
----
-
-## 🔄 CI/CD Pipelines
-
-The project uses **two separate GitHub Actions workflows**, designed to be triggered independently:
-
-### Pipeline 1 — Infrastructure (`infra.yml`)
-
-> **Trigger:** Manual (`workflow_dispatch`) with resource targeting
-
-| Option                            | What It Deploys                             |
-| --------------------------------- | ------------------------------------------- |
-| `all`                             | Full `terraform apply` of all resources     |
-| `network (ALB & Security Groups)` | Only ALB and ALB security group             |
-| `ECR & EC2_temp`                  | Only Launch Template and ECR repository     |
-| `DESTROY ALL`                     | `terraform destroy` + S3 state file cleanup |
-
-```
-Manual Trigger → Checkout → Setup Terraform → Init (S3 Backend) → Conditional Apply/Destroy
-```
-
-### Pipeline 2 — Application (`app.yml`)
-
-> **Trigger:** Manual (`workflow_dispatch`)
-
-```
-Manual Trigger → Checkout → AWS Auth → ECR Login → Terraform Init
-    → Update image_tag in state → Docker Build → Tag with SHA → Push to ECR
-```
-
-The image is tagged with the **Git commit SHA** for full traceability. Terraform state is updated with the new tag so subsequent EC2 launches pull the correct version.
-
----
-
-## 📝 Prerequisites
-
-| Requirement        | Details                                                     |
-| ------------------ | ----------------------------------------------------------- |
-| **AWS Account**    | With programmatic access (IAM user)                         |
-| **S3 Bucket**      | Pre-created for Terraform state storage                     |
-| **GitHub Secrets** | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `BUCKET_NAME` |
-| **Terraform**      | v1.0+ (handled by CI, only needed for local dev)            |
-| **Docker**         | 20.10+ (handled by CI, only needed for local dev)           |
-| **Node.js**        | 18+ (only needed for local development)                     |
-
----
-
-## 🚀 Getting Started
-
-### 1. Clone the Repository
+### Local Dev
 
 ```bash
-git clone https://github.com/<your-username>/web-platform-core.git
-cd web-platform-core
+cd src && npm install && npm run dev     # http://localhost:3000
 ```
-
-### 2. Configure GitHub Secrets
-
-Navigate to **Settings → Secrets and variables → Actions** and add:
-
-| Secret                  | Description                        |
-| ----------------------- | ---------------------------------- |
-| `AWS_ACCESS_KEY_ID`     | IAM access key                     |
-| `AWS_SECRET_ACCESS_KEY` | IAM secret key                     |
-| `BUCKET_NAME`           | S3 bucket name for Terraform state |
-
-### 3. Deploy Infrastructure
-
-1. Go to the **Actions** tab in GitHub
-2. Select **"1. AWS Infrastructure (Terraform)"**
-3. Click **"Run workflow"**
-4. Choose `all` to deploy the full stack
-
-### 4. Build & Deploy the Application
-
-1. Go to the **Actions** tab
-2. Select **"2. Build & Deploy App"**
-3. Click **"Run workflow"**
-
-The pipeline will build the Docker image, push it to ECR, and update the Terraform state. New EC2 instances in the ASG will automatically pull the latest image.
-
-### 5. Local Development
 
 ```bash
-# Install dependencies
-cd src && npm install
-
-# Start development server
-npm run dev
-
-# The API will be available at http://localhost:3000
-```
-
-### 6. Local Docker Build
-
-```bash
-# Build the image
-docker build -t examedge .
-
-# Run the container
-docker run -p 80:80 examedge
+docker build -t examedge . && docker run -p 80:80 examedge
 ```
 
 ---
 
-## 🔧 Configuration
+## Security Notes
 
-### Environment Variables
-
-Create a `.env` file in the `src/` directory (see `.env.example`):
-
-| Variable          | Default                 | Description                         |
-| ----------------- | ----------------------- | ----------------------------------- |
-| `PORT`            | `3000`                  | Server port (set to `80` in Docker) |
-| `NODE_ENV`        | `development`           | Environment mode                    |
-| `ALLOWED_ORIGINS` | `http://localhost:3000` | CORS whitelist (comma-separated)    |
-
-### Terraform Variables
-
-| Variable       | Default      | Description                       |
-| -------------- | ------------ | --------------------------------- |
-| `aws_region`   | `ap-south-1` | AWS deployment region             |
-| `project_name` | `web`        | Prefix for all resource names     |
-| `image_tag`    | `latest`     | Docker image tag (auto-set by CI) |
-
----
-
-## 🔒 Security
-
-This project implements security at multiple layers:
-
-### Application Layer
-
-- **Helmet.js** — Secure HTTP headers & Content Security Policy
-- **CORS** — Origin whitelisting with credentials support
-- **Rate Limiting** — 200 req/15min globally, 20 req/15min for auth endpoints
-- **Input Limits** — 50KB max payload size to prevent abuse
-
-### Infrastructure Layer
-
-- **Least-Privilege IAM** — EC2 role restricted to ECR pull operations only
-- **Security Group Isolation** — EC2 accepts traffic only from ALB, not the public internet
-- **Encrypted State** — Terraform state stored in S3 with server-side encryption
-- **No SSH Access** — EC2 instances have no SSH key pair; managed entirely via CI/CD
-
----
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
----
-
-<p align="center">
-  <sub>Built with ☁️ Terraform &nbsp;·&nbsp; 🐳 Docker &nbsp;·&nbsp; ⚡ GitHub Actions</sub>
-</p>
+- EC2 only accepts traffic from ALB (no public access)
+- IAM role scoped to ECR pull only
+- App uses Helmet, CORS whitelist, and rate limiting
+- No SSH keys on instances — deploy only through CI/CD
+- Terraform state encrypted at rest in S3
