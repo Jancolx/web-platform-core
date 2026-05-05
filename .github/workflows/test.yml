@@ -1,0 +1,10 @@
+on:
+  workflow_dispatch: # Allows manual run from GitHub Actions tab
+
+jobs:
+    name: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        run: echo ${{ github.sha }}
